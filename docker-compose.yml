@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  router:
+    build:
+      context: .
+      dockerfile: Dockerfile.router
+    ports:
+      - "8000:8000"
+    environment:
+      - SHARD_URLS=http://shard_science:8001,http://shard_history:8001,http://shard_coding:8001
+    depends_on:
+      - shard_science
+      - shard_history
+      - shard_coding
+
+  shard_science:
+    build:
+      context: .
+      dockerfile: Dockerfile.shard
+    environment:
+      - SHARD_ID=Science_Node
+      - SHARD_TOPIC=Science
+      - PORT=8001
+    ports:
+      - "8001:8001"
+
+  shard_history:
+    build:
+      context: .
+      dockerfile: Dockerfile.shard
+    environment:
+      - SHARD_ID=History_Node
+      - SHARD_TOPIC=History
+      - PORT=8001
+    ports:
+      - "8002:8001"
+
+  shard_coding:
+    build:
+      context: .
+      dockerfile: Dockerfile.shard
+    environment:
+      - SHARD_ID=Coding_Node
+      - SHARD_TOPIC=Coding
+      - PORT=8001
+    ports:
+      - "8003:8001"

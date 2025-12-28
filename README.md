@@ -1,60 +1,31 @@
-license: mit
-🔧 From Theory to Runtime.
- >
- > We didn't stop at the architecture. Today, we released the OpenVinayaka Engine (OV-Engine) v1.0—a full C++ inference runtime that you can install like Ollama.
- >
- > It unifies Transformers, Mamba, and MoE under one mathematical roof.
- >
- > Standard RAG relies on vector similarity, which is easily tricked by "distractors" (keywords). Our 10k-scenario stress test showed RAG failing 89% of the time on adversarial traps.
- >
- > OV-Engine failed 0 times.
- >
- > Why? Because it uses Internal State Steering. We don't just retrieve context; we mathematically intervene in the model's layers to prevent drift. It is "Hybrid Inference"—the GPU does the logic, the CPU
- (Graph) does the thinking.
- >
- > Code is open. Run it locally. Let's build AI that respects the truth. 🌿https://github.com/narasimhudumeetsworld/OV-engine
- > https://huggingface.co/vaibhavlakshmi/OpenVinayaka-Engine/tree/main and https://zenodo.org/records/18072753 
- > hashtag#Cplusplus hashtag#DeepLearning hashtag#SystemDesign hashtag#OpenVinayaka
-- openvinayaka
-- ov-engine
-- ov-memory
-- hallucination-reduction
-- safety
-pretty_name: OpenVinayaka Engine v1.0
-size_categories:
-- 10K<n<100K
----
+# OpenVinayaka v3.5: Production Distributed Cluster
 
-# OpenVinayaka Engine (OV-Engine)
+This folder contains the **Microservices Architecture** for running OV-Engine at scale. It replaces monolithic inference with a swarm of "Fractal Shards."
 
-**Author:** Prayaga Vaibhav (Akka)  
-**License:** MIT
+## 🏗️ Architecture
+1.  **Router (Port 8000):** OpenAI-compatible API Gateway. Broadcasts queries to all shards.
+2.  **Shards (Ports 8001+):** Independent Vector Memory Units. Each shard holds a specific domain (Science, History, etc.) and calculates `P = S * C * R * W` locally.
 
-## 🚀 What is OV-Engine?
-OV-Engine is a **Universal Hallucination-Free Inference Runtime**. It goes beyond simple RAG by using a custom C++ kernel to mathematically intervene in the model's internal layers (Attention Matrices & SSM States).
+## 🚀 How to Run (Docker)
+This is the preferred method. It creates a local cluster instantly.
 
-## 🏆 Benchmark Results (10,000 Adversarial Tests)
-We tested OV-Engine against Standard Vector RAG on 10,000 "Trap" scenarios (Version Conflicts, Security Negation, Numerical Confusion).
+```bash
+# 1. Build and Start the Cluster
+docker-compose up --build
 
-| Metric | Standard RAG | OV-Engine |
-| :--- | :--- | :--- |
-| **Wins** | 1,063 | **10,000** |
-| **Failures** | 8,937 | **0** |
-| **Accuracy** | 10.6% | **100.0%** |
-| **Throughput** | ~67 q/s | ~67 q/s |
+# 2. Test the API (OpenAI Compatible)
+curl http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "ov-cluster-v1",
+    "messages": [{"role": "user", "content": "What is the speed of light?"}]
+  }'
+```
 
-## 🛠️ Technology
-OV-Engine implements the **OV-Memory Protocol** (`P = S * C * R * W`) inside a unified C++ kernel that supports:
-*   **Transformers** (Attention Steering)
-*   **Mamba / SSMs** (State Correction)
-*   **Mixture of Experts** (Router Bias)
+## 📦 Manual Run (No Docker)
+If you want to run it manually (e.g., for dev), install dependencies first:
+```bash
+pip install fastapi uvicorn aiohttp sentence-transformers numpy
+python3 run_local_cluster.py
+```
 
-## 📦 This Release
-This repository contains:
-1.  The **C++ Engine Source Code**.
-2.  The **Python CLI** (Ollama-like usage).
-3.  The **10k Benchmark Dataset**.
-4.  The **OV-GGUF File Specification**.
-
----
-*Dedicated to Om Vinayaka and the pursuit of Truth in AI.*
