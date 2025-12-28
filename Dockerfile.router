@@ -1,0 +1,5 @@
+FROM python:3.10-slim
+WORKDIR /app
+COPY app/router_node.py .
+RUN pip install fastapi uvicorn aiohttp
+CMD ["python", "router_node.py"]
