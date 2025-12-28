@@ -1,6 +1,6 @@
 # 🪔 OpenVinayaka Engine (OV-Engine)
 
-> *Dedicated to Om Vinayaka & Prayaga Vaibhav*  
+> *Dedicated to Om Vinayaka *  
 > *"We don't need more compute. We need better geometry."*
 
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Model-yellow?logo=huggingface)](https://huggingface.co/vaibhavlakshmiprayaga/OpenVinayaka-Engine)
